@@ -6,6 +6,7 @@ This project is developed and maintained by **RetroHackLab**.
 - **Handle:** RetroHackLab
 - **Focus:** Retro-computing & Embedded Systems
 - **Location:** Sfax, Tunisia 🇹🇳
+
 https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-gndRskGh8oM5oqQx9aWlmAOletLYHsCftA&s
 ## 🌐 Community Channels
 Follow my progress and join the community discussions:
