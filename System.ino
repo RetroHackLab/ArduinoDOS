@@ -10,8 +10,8 @@ bool isWritingFile = false;
 
 String currentFilename = "";
 String systemCountry = "Tunisia";
-String systemLanguage = "EN"; // 🇬🇧 Default Language = English
-String textTextColor = "\033[0;32m"; // Default ANSI Green
+String systemLanguage = "EN";         // 🇬🇧 Default Language = English
+String textTextColor = "\033[0;32m";  // Default ANSI Green
 const String adminPassword = "retrohack";
 
 void setup() {
@@ -46,7 +46,7 @@ void setup() {
 
     // 3. Official OS Title before access
     Serial.println(F("=================================================="));
-    Serial.println(F("                   ArduinoDOS                     "));
+    Serial.println(F("                  ArduinoDOS                      "));
     Serial.println(F("=================================================="));
     Serial.print(F("\033[0m")); // Temporary color reset
     
@@ -57,16 +57,19 @@ void setup() {
 void loop() {
     if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
-        input.trim();
+        input.trim(); // Nettoie les retours à la ligne (\r et \n)
         
         if (input.length() > 0) {
             if (isWritingFile) {
                 if (input == F("#end#")) {
                     isWritingFile = false;
                     Serial.print(textTextColor);
-                    Serial.println("[Editor] Fichier '" + currentFilename + "' sauvegarde et complet.\033[0m");
+                    Serial.print(F("[Editor] Fichier '"));
+                    Serial.print(currentFilename);
+                    Serial.println(F("' sauvegarde et complet.\033[0m"));
                 } else {
-                    Serial.println("  [>>] " + input); 
+                    Serial.print(F("  [>>] "));
+                    Serial.println(input); 
                 }
             } else {
                 executeCommand(input);
@@ -116,9 +119,11 @@ void executeCommand(String cmd) {
         else if (cmd.startsWith(F("COUNTRY"))) {
             if (cmd.length() > 8) {
                 systemCountry = cmd.substring(8);
-                Serial.println("[Region] Country changed to: " + systemCountry);
+                Serial.print(F("[Region] Country changed to: "));
+                Serial.println(systemCountry);
             } else {
-                Serial.println("[Region] Current Region: " + systemCountry);
+                Serial.print(F("[Region] Current Region: "));
+                Serial.println(systemCountry);
             }
         }
         else if (cmd == F("DEVICE.mvbx")) {
@@ -169,18 +174,21 @@ void executeCommand(String cmd) {
     // -------------------------------------------------------------------------
     if (cmd.startsWith(F("VERIFY "))) {
         String path = cmd.substring(7);
-        Serial.println("[Verification] Analyse et preview de l'integrite du fichier a: " + path);
+        Serial.print(F("[Verification] Analyse et preview de l'integrite du fichier a: "));
+        Serial.println(path);
         return;
     }
 
     if (cmd.startsWith(F("touch "))) {
         String target = cmd.substring(6);
-        if (target.endsWith("/")) {
+        if (target.endsWith(F("/"))) {
             Serial.println(F("Folder Creation Done"));
         } else {
             currentFilename = target;
             isWritingFile = true;
-            Serial.println("[Editor] Ecriture dans '" + currentFilename + "' active. Tapez '#end#' pour sauvegarder.");
+            Serial.print(F("[Editor] Ecriture dans '"));
+            Serial.print(currentFilename);
+            Serial.println(F("' active. Tapez '#end#' pour sauvegarder."));
         }
         return;
     }
@@ -192,20 +200,23 @@ void executeCommand(String cmd) {
         String file = cmd.substring(4, firstSpace);
         String perm = cmd.substring(firstSpace + 1);
 
-        if (file.endsWith("/")) {
-            if (perm == F("main/tree")) Serial.println("[Perm] Dossier '" + file + "' -> main/tree [Arborescence OK]");
-            else Serial.println(F("\033[0;31m[ERROR] Utilisez main/tree pour les dossiers.\033[0m"));
+        if (file.endsWith(F("/"))) {
+            if (perm == F("main/tree")) {
+                Serial.print(F("[Perm] Dossier '")); Serial.print(file); Serial.println(F("' -> main/tree [Arborescence OK]"));
+            } else {
+                Serial.println(F("\033[0;31m[ERROR] Utilisez main/tree pour les dossiers.\033[0m"));
+            }
             return;
         }
 
-        if (perm == F("root/mine")) Serial.println("[Perm] '" + file + "' -> root/mine [Execution Console OK]");
-        else if (perm == F("root/debug")) Serial.println("[Perm] '" + file + "' -> root/debug [Debugging Actif]");
-        else if (perm == F("root/content")) Serial.println(F("[Perm] WARNING: root/content applique (Utility seulement - Non recommande)"));
-        else if (perm == F("su/R")) Serial.println("[Perm] '" + file + "' -> su/R [Modification Subregistry Autorisee]");
-        else if (perm == F("root/git")) Serial.println("[Perm] '" + file + "' -> root/git [Code Source Identifie]");
-        else if (perm == F("lock/encrypt")) Serial.println("[Perm] '" + file + "' -> lock/encrypt [Script Re-chiffrement Console Obligatoire]");
-        else if (perm == F("lock/decrypt")) Serial.println("[Perm] '" + file + "' -> lock/decrypt [Script Dechiffrement Console Obligatoire]");
-        else Serial.println(F("\033[0;31m[ERROR] Permission inconnue.\033[0m"));
+        if (perm == F("root/mine")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> root/mine [Execution Console OK]")); }
+        else if (perm == F("root/debug")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> root/debug [Debugging Actif]")); }
+        else if (perm == F("root/content")) { Serial.print(F("[Perm] WARNING: root/content applique (Utility seulement - Non recommande)")); }
+        else if (perm == F("su/R")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> su/R [Modification Subregistry Autorisee]")); }
+        else if (perm == F("root/git")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> root/git [Code Source Identifie]")); }
+        else if (perm == F("lock/encrypt")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> lock/encrypt [Script Re-chiffrement Console Obligatoire]")); }
+        else if (perm == F("lock/decrypt")) { Serial.print(F("[Perm] '")); Serial.print(file); Serial.println(F("' -> lock/decrypt [Script Dechiffrement Console Obligatoire]")); }
+        else { Serial.println(F("\033[0;31m[ERROR] Permission inconnue.\033[0m")); }
         return;
     }
 
@@ -214,7 +225,8 @@ void executeCommand(String cmd) {
         
         Serial.print(F("\033[0;33m[AUTH] Entrez le mot de passe Administrateur : \033[0m"));
         while (!Serial.available());
-        String pass = Serial.readStringUntil('\n'); pass.trim();
+        String pass = Serial.readStringUntil('\n'); 
+        pass.trim(); // <-- Crucial : Supprime le \r invisible pour valider le mot de passe
         
         if (pass == adminPassword) {
             isSuperUser = true;
