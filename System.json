@@ -1,0 +1,40 @@
+{
+  "firmware": {
+    "name": "ArduinoDOS",
+    "version": "1.5.0",
+    "developer": "RetroHackLab",
+    "architecture": "32-bit (Engine)",
+    "target_platform": "AVR-8bit"
+  },
+  "compatibility": {
+    "supported_boards": [
+      "Arduino Uno R3",
+      "Arduino Duemilanove",
+      "Arduino Diecimila",
+      "Arduino NG",
+      "Arduino Serial"
+    ],
+    "unsupported_boards": [
+      "Arduino Uno R4 (Renesas ARM)",
+      "Arduino MKR Series",
+      "Arduino Portenta"
+    ],
+    "note": "Optimized for ATmega328/168 AVR microcontrollers."
+  },
+  "localization": {
+    "default_language": "EN",
+    "default_country": "Tunisia",
+    "timezone": "UTC+1"
+  },
+  "security": {
+    "root_access": "restricted",
+    "encryption_protocol": "vc-78",
+    "allow_factory_reset": true
+  },
+  "hardware_interface": {
+    "vga_sync_pin": 8,
+    "vga_video_pin": 9,
+    "ps2_clk_pin": 3,
+    "ps2_data_pin": 4
+  }
+}
