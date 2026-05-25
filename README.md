@@ -24,3 +24,6 @@ To ensure proper compilation without toolchain conflicts, organize your project 
     ├── 📄 .io            # 🌐 Deployment anchor file
     ├── 📄 eeprom.h       # ⚡ Low-level builtin hardware macros
     └── 📄 stddef.h       # 📏 Standard size types and definitions
+---
+## ℹ️ Additional Documentation
+Need help or troubleshooting? Check out the [HELP.md](HELP.md) guide for more details.
